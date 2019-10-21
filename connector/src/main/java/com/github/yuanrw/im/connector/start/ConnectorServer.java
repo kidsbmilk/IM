@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
+ * 这个作为client的server，所以下面用的是ConnectorClientHandler，处理来自client的消息
  * Date: 2019-02-09
  * Time: 23:27
  *

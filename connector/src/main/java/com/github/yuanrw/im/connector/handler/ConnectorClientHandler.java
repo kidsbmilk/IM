@@ -72,7 +72,9 @@ public class ConnectorClientHandler extends SimpleChannelInboundHandler<Message>
             parser.register(Internal.InternalMsg.MsgType.GREET,
                 (m, ctx) -> userOnlineService.userOnline(m.getId(), m.getMsgBody(), ctx));
 
+            // 这个是connector返回给client信息或者connector将信息传给transfer
             register(Chat.ChatMsg.class, (m, ctx) -> connectorService.doChatToClientOrTransferAndFlush(m));
+            // 这个是connector给client或者transfer发送ack信息
             register(Ack.AckMsg.class, (m, ctx) -> connectorService.doSendAckToClientOrTransferAndFlush(m));
             register(Internal.InternalMsg.class, parser.generateFun());
         }

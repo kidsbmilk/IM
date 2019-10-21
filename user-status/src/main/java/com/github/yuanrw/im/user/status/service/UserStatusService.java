@@ -10,6 +10,7 @@ public interface UserStatusService {
 
     /**
      * user online
+     * 用户上线，存储userId与机器id的关系
      *
      * @param userId
      * @param connectorId
@@ -26,6 +27,7 @@ public interface UserStatusService {
 
     /**
      * get connector id by user id
+     * 通过用户id查找他当前连接的机器id
      *
      * @param userId
      * @return

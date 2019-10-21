@@ -26,6 +26,7 @@ public class ConnectorStarter {
         ConnectorStarter.CONNECTOR_CONFIG = parseConfig();
 
         //connector to transfer
+        // 见connector/src/main/resources/connector.properties，transfer.urls是指transfer模块的机器地址
         ConnectorClient.start(CONNECTOR_CONFIG.getTransferUrls());
 
         //start connector server

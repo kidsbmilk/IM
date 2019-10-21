@@ -31,6 +31,7 @@ public class ConnectorService {
         this.clientConnContext = clientConnContext;
     }
 
+    // 接收到transfer发来的信息，connector转给client
     public void doChatToClientAndFlush(Chat.ChatMsg msg) {
         Conn conn = clientConnContext.getConnByUserId(msg.getDestId());
         if (conn == null) {
@@ -43,6 +44,7 @@ public class ConnectorService {
         doSendAckToClientOrTransferAndFlush(getDelivered(msg));
     }
 
+    // 接收来自client的消息，然后发送ack给client
     public void doSendAckToClientAndFlush(Ack.AckMsg ackMsg) {
         Conn conn = clientConnContext.getConnByUserId(ackMsg.getDestId());
         if (conn == null) {
@@ -54,6 +56,7 @@ public class ConnectorService {
         conn.getCtx().writeAndFlush(ackMsg);
     }
 
+    // 这个是connector返回给client信息或者connector将信息传给transfer
     public void doChatToClientOrTransferAndFlush(Chat.ChatMsg msg) {
         Conn conn = clientConnContext.getConnByUserId(msg.getDestId());
         boolean onTheMachine = sendMsg(conn, msg.getId(), msg, (c, m) -> conn.getCtx().writeAndFlush(msg));
@@ -62,6 +65,7 @@ public class ConnectorService {
         }
     }
 
+    // 这个是connector给client或者transfer发送ack信息
     public void doSendAckToClientOrTransferAndFlush(Ack.AckMsg ackMsg) {
         logger.debug("[send ack] {}", ackMsg.toString());
 
@@ -69,12 +73,13 @@ public class ConnectorService {
         sendMsg(conn, ackMsg.getId(), ackMsg, (c, m) -> conn.getCtx().writeAndFlush(ackMsg));
     }
 
+    // 这个getDelivered是指生成指定消息已传送的ack消息，感觉取名很容易让人不理解
     public Ack.AckMsg getDelivered(Chat.ChatMsg msg) {
         return Ack.AckMsg.newBuilder()
             .setId(IdWorker.genId())
             .setVersion(MsgVersion.V1.getVersion())
             .setFromId(msg.getDestId())
-            .setDestId(msg.getFromId())
+            .setDestId(msg.getFromId()) // 是对源头的ack答复，所以destId是源id
             .setDestType(msg.getDestType() == Chat.ChatMsg.DestType.SINGLE ? Ack.AckMsg.DestType.SINGLE : Ack.AckMsg.DestType.GROUP)
             .setCreateTime(System.currentTimeMillis())
             .setMsgType(Ack.AckMsg.MsgType.DELIVERED)

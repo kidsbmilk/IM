@@ -27,7 +27,7 @@ import static com.github.yuanrw.im.common.parse.AbstractMsgParser.checkDest;
 import static com.github.yuanrw.im.common.parse.AbstractMsgParser.checkFrom;
 
 /**
- * send msg to transfer
+ * 处理来自transfer的消息
  * stateless, shareable
  * Date: 2019-02-12
  * Time: 12:17
@@ -70,6 +70,7 @@ public class ConnectorTransferHandler extends SimpleChannelInboundHandler<Messag
         return collector;
     }
 
+    // connector上线，向transfer发送问候消息
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         logger.info("[ConnectorTransfer] connect to transfer");
@@ -94,6 +95,7 @@ public class ConnectorTransferHandler extends SimpleChannelInboundHandler<Messag
         ctx.writeAndFlush(greet);
     }
 
+    // 处理从transfer发送到connector上的消息
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
         logger.debug("[connector] get msg: {}", msg.toString());
@@ -116,7 +118,9 @@ public class ConnectorTransferHandler extends SimpleChannelInboundHandler<Messag
             InternalParser parser = new InternalParser(3);
             parser.register(Internal.InternalMsg.MsgType.ACK, (m, ctx) -> greetRespDone(m));
 
+            // 接收到transfer发来的信息，connector转给client
             register(Chat.ChatMsg.class, (m, ctx) -> connectorService.doChatToClientAndFlush(m));
+            // 接收来自client的消息，然后发送ack给client
             register(Ack.AckMsg.class, (m, ctx) -> connectorService.doSendAckToClientAndFlush(m));
             register(Internal.InternalMsg.class, parser.generateFun());
         }

@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
+ * 这个作为transfer的client，所以用的是ConnectorTransferHandler，处理来自transfer的消息
  * Date: 2019-05-02
  * Time: 17:50
  *
@@ -25,6 +26,7 @@ public class ConnectorClient {
 
     private static Logger logger = LoggerFactory.getLogger(ConnectorClient.class);
 
+    // 见connector/src/main/resources/connector.properties，transfer.urls是指transfer模块的机器地址
     static void start(String[] transferUrls) {
         for (String transferUrl : transferUrls) {
             String[] url = transferUrl.split(":");
