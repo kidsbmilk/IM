@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 /**
+ * 向mq里写入消息，是mq消息队列的生产者
  * Date: 2019-05-06
  * Time: 14:27
  *

@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
+ * 作为connector的server，接收并处理来自connector的消息
  * Date: 2019-04-12
  * Time: 18:16
  *

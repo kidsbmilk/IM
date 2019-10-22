@@ -33,6 +33,9 @@ public class ConnectorConnContext extends MemoryConnContext<ConnectorConn> {
         this.userStatusService = userStatusServiceFactory.createService(properties);
     }
 
+    // connector与transfer之间，也是通过正常的conn来连接的，这个conn与用户跟connector的conn是同类型的连接。
+    // connContext.getConnByUserId中是先判断用户id在哪个connector上，然后取出连接此connector的conn，
+    // transfer通过这个conn，将消息发送给connector。
     public ConnectorConn getConnByUserId(String userId) {
         String connectorId = userStatusService.getConnectorId(userId);
         if (connectorId != null) {
