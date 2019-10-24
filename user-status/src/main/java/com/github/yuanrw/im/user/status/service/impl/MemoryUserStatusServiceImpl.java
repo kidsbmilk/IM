@@ -12,6 +12,8 @@ import java.util.concurrent.ConcurrentMap;
  *
  * @author yrw
  */
+
+// 这个只在test里使用了
 public class MemoryUserStatusServiceImpl implements UserStatusService {
 
     private ConcurrentMap<String, String> userIdConnectorIdMap;
