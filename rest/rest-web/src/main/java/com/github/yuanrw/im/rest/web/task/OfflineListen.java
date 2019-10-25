@@ -23,6 +23,18 @@ import javax.annotation.PostConstruct;
  *
  * @author yrw
  */
+
+/**
+ * 有了@Component后，而且RestStarter中有@ComponentScan(basePackages = {"com.github.yuanrw.im.rest"})，
+ * 则OfflineListen会被自动扫描创建相应对象，但是在自动创建对象时，发现OfflineListen只有一个带参数构造方法，
+ * 所以会传入相应的对象然后生成OfflineListen对象。
+ * 这样的流程也是非常自然的，不用再纠结@Autowired注解了。
+ *
+ * 同时，可以发现OfflineListen带参数构造方法的实现，可以更加灵活地结合spring的自动注入与手工new对象。
+ * ParseService是common包下的类，不会自动扫描，所以这里手工new了。
+ *
+ * 对于OfflineService对象的自动生成是这样的：OfflineServiceImpl类上有@Service注解，所以会自动创建OfflineService对象。
+ */
 @Component
 public class OfflineListen implements ChannelAwareMessageListener {
     private Logger logger = LoggerFactory.getLogger(OfflineListen.class);
@@ -31,7 +43,7 @@ public class OfflineListen implements ChannelAwareMessageListener {
     private OfflineService offlineService;
 
     public OfflineListen(OfflineService offlineService) {
-        this.parseService = new ParseService();
+        this.parseService = new ParseService(); // ParseService是common包下的类，不会自动扫描，所以这里手工new了。
         this.offlineService = offlineService;
     }
 

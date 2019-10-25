@@ -12,6 +12,18 @@ import org.springframework.stereotype.Service;
  *
  * @author yrw
  */
+
+/**
+ * 有了@Service后，而且RestStarter中有@ComponentScan(basePackages = {"com.github.yuanrw.im.rest"})，
+ * 则DefaultUserSpiImpl会被自动扫描创建相应对象，但是在自动创建对象时，发现DefaultUserSpiImpl只有一个带参数构造方法，
+ * 所以会传入相应的对象然后生成DefaultUserSpiImpl对象。
+ * 这样的流程也是非常自然的，不用再纠结@Autowired注解了。
+ *
+ * 再看UserService的实现类UserServiceImpl上有@Service注解，
+ * 所以这里的构造函数能得到对应的对象而顺利构造DefaultUserSpiImpl对象。
+ *
+ * 这个DefaultUserSpiImpl其实就是走数据库的实现，见UserServiceImpl里的具体操作。
+ */
 @Service
 public class DefaultUserSpiImpl implements UserSpi<UserBase> {
 
