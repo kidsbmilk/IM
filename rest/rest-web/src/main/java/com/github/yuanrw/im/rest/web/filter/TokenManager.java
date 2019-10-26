@@ -23,6 +23,7 @@ public class TokenManager {
         this.template = template;
     }
 
+    // reactor一行代码高性能并发编程：https://blog.csdn.net/fang_sh_lianjia/article/details/53436977
     public Mono<String> validateToken(String token) {
         return template.opsForValue().get(SESSION_KEY + token).map(id -> {
             template.expire(SESSION_KEY + token, Duration.ofMinutes(30));
