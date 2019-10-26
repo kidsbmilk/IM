@@ -21,6 +21,15 @@ import java.util.Properties;
 public class TransferStarter {
     public static TransferConfig TRANSFER_CONFIG = new TransferConfig();
     public static TransferMqProducer producer;
+    /**
+     * 这里的依赖实现太复杂了，guice还是侵入代码了，耦合度高。
+     *
+     * TransferModule使得需要userStatusService对象的地方可以通过自动注入UserStatusServiceFactory对象然后再通过UserStatusServiceFactory.createService的方式来生成，
+     * 在ConnectorConnContext的构造函数中，就依赖了userStatusService对象，就是通过上述方式来实现的。
+     * 代码中没有直接生成ConnectorConnContext对象的地方，是TransferConnectorHandler构造函数中需要TransferConnectorHandler对象，也是通过依赖注入自动生成的，
+     * 具体开始注入的时机是：TransferServer.startTransferServer中的TransferStarter.injector.getInstance(TransferConnectorHandler.class)。
+     * 两次注入地点：ConnectorConnContext的构造函数、TransferConnectorHandler构造函数上都有@Inject注解。
+     */
     static Injector injector = Guice.createInjector(new TransferModule());
 
     public static void main(String[] args) {

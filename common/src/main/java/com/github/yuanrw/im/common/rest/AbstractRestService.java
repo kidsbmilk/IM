@@ -29,6 +29,7 @@ public abstract class AbstractRestService<R> {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
+        // Retrofit初探：https://www.jianshu.com/p/d6270e48e1ad
         Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(url)
             .addConverterFactory(JacksonConverterFactory.create(objectMapper))

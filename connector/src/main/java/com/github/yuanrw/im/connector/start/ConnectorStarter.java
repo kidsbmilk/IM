@@ -19,6 +19,10 @@ import java.util.Properties;
  */
 public class ConnectorStarter {
     public static ConnectorConfig CONNECTOR_CONFIG = new ConnectorConfig();
+    /**
+     * connector既要连接客户端，又要连接transfer，这里的业务更复杂，依赖注入也更复杂，
+     * 只要把transfer里的看明白了，这里的也就没什么疑惑了，不用再纠结于对象是如何生成的，只要业务需要，拿来对象直接用就行。
+     */
     public static Injector injector = Guice.createInjector(new ConnectorModule());
 
     public static void main(String[] args) throws IOException {
