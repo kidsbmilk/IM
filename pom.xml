@@ -28,6 +28,10 @@
         <protobuf.version>3.7.1</protobuf.version>
         <guice.version>4.2.2</guice.version>
         <rocksdb.version>5.5.1</rocksdb.version>
+        <!-- 聊聊Raft一致性协议以及Apache Ratis：
+        https://blog.csdn.net/Androidlushangderen/article/details/86763412
+        这个项目里没用到，只是写了个版本号，后面看看怎么用上 TODO。
+        -->
         <ratis.version>0.3.0</ratis.version>
     </properties>
 
