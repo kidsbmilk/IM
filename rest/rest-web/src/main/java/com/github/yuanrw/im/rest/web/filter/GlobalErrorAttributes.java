@@ -18,7 +18,7 @@ import java.util.Map;
  *
  * @author yrw
  */
-@Configuration
+@Configuration // @Configuration标注在类上，相当于把该类作为spring的xml配置文件中的<beans>，作用为：配置spring容器(应用上下文)
 public class GlobalErrorAttributes extends DefaultErrorAttributes {
 
     private Logger logger = LoggerFactory.getLogger(GlobalErrorWebExceptionHandler.class);
@@ -31,7 +31,7 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
         errorAttributes.put("status", 500);
         Throwable error = this.getError(request);
 
-        logger.error("[rest] unknown error", this.getError(request));
+        logger.error("[rest] unknown error", error);
 
         if (error instanceof ResponseStatusException) {
             return super.getErrorAttributes(request, includeStackTrace);

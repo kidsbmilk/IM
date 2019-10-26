@@ -13,12 +13,19 @@ import reactor.core.publisher.Mono;
  *
  * @author yrw
  */
+
+/**
+ * 有了@Component后，而且RestStarter中有@ComponentScan(basePackages = {"com.github.yuanrw.im.rest"})，
+ * 则HeaderFilter会被自动扫描创建相应对象，但是在自动创建对象时，发现HeaderFilter只有一个带参数构造方法，
+ * 所以会传入相应的对象然后生成HeaderFilter对象。
+ * 这样的流程也是非常自然的，不用再纠结@Autowired注解了。
+ */
 @Component
 public class HeaderFilter implements WebFilter {
 
     private TokenManager tokenManager;
 
-    public HeaderFilter(TokenManager tokenManager) {
+    public HeaderFilter(TokenManager tokenManager) { // 这个注入的是同包下的TokenManager对象，TokenManager类上有@Service注解。
         this.tokenManager = tokenManager;
     }
 
@@ -27,7 +34,7 @@ public class HeaderFilter implements WebFilter {
         String path = serverWebExchange.getRequest().getPath().value();
 
         if ("/user/login".equals(path) || path.startsWith("/offline")) {
-            return webFilterChain.filter(serverWebExchange);
+            return webFilterChain.filter(serverWebExchange); // 原来spring内部就使用了Mono
         }
         if (!serverWebExchange.getRequest().getHeaders().containsKey("token")) {
             return Mono.error(new ImException("[rest] user is not login"));

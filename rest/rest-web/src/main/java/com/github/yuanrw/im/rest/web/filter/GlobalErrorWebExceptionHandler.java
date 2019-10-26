@@ -21,12 +21,20 @@ import java.util.Map;
  *
  * @author yrw
  */
+
+/**
+ * 有了@Component后，而且RestStarter中有@ComponentScan(basePackages = {"com.github.yuanrw.im.rest"})，
+ * 则GlobalErrorWebExceptionHandler会被自动扫描创建相应对象，但是在自动创建对象时，
+ * 发现GlobalErrorWebExceptionHandler只有一个带参数构造方法，
+ * 所以会传入相应的对象然后生成GlobalErrorWebExceptionHandler对象。
+ * 这样的流程也是非常自然的，不用再纠结@Autowired注解了。
+ */
 @Component
 @Order(-2)
 public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHandler {
 
     public GlobalErrorWebExceptionHandler(
-        ErrorAttributes errorAttributes,
+        ErrorAttributes errorAttributes, // 这个注入的是GlobalErrorAttributes对象，GlobalErrorAttributes类上有@Configuration注解。
         ResourceProperties resourceProperties,
         ApplicationContext applicationContext,
         ServerCodecConfigurer serverCodecConfigurer

@@ -28,7 +28,7 @@ public class ValidHandler {
         return request
             .bodyToMono(bodyClass)
             .flatMap(body -> {
-                    Set<ConstraintViolation<BODY>> msg = validator.validate(body);
+                    Set<ConstraintViolation<BODY>> msg = validator.validate(body); // 这个返回的是“违章”条目。
                     if (msg.isEmpty()) {
                         return block.apply(Mono.just(body));
                     } else {
